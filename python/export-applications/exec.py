@@ -2,6 +2,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 import getpass
 import argparse
+import json
+import time
 
 
 def _get_applications(url, hash):
@@ -38,7 +40,11 @@ def main():
 
     args = parser.parse_args()
 
-    print(_process(args.url, args.username))
+    timestamp = int(time.time())
+    filename = f"applications-{timestamp}.json"
+    with open(filename, 'w') as f:
+        json.dump(_process(args.url, args.username), f, indent=4)
+    print(f"Output saved to {filename}")
 
 if __name__ == "__main__":
     main()
